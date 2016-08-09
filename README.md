@@ -1,11 +1,11 @@
-# GIS SRTM Heightmap Tiles Pt
+# SRTM Height Map Tiles PT
 
 
 ## Motivation
 
-There's great open data for GIS stuff, but I find it hard to master and relate to.
-I wanted simple, developer-friendly resources to explore de altitude data I've known
-I had available via the SRTM initiative. These tiles are my contribution for that cause.
+There's been great open data for GIS purposes available, but I find it hard to grasp and manipulate to for non-GIS people.
+I wanted simple, developer-friendly resources to explore the altitude data I've known I had available via the SRTM initiative.
+These tiles are my contribution to that cause.
 
 
 ## What is this about?
@@ -54,7 +54,7 @@ The executive summary for what I did was:
   * gdalwarp using the relevant src geoTiff, passing it lat,lon bounds
   * gdal_translate to resize the data to 256x256
   * gdal_translate to get back the XYZ data format, which is very verbose but easy to parse (for every pixel, a line with lat, lon, altitude)
-  * process the XYZ file into altitude readings and stored them as a PNG, storing the integer altitude encded in RG RGBA channels.
+  * process the XYZ file into altitude readings and stored them as a PNG, storing the integer altitude encoded in RG RGBA channels.
 * automated the generation of all elected tiles and did a bit of manual tweaking (namely in the transition between 35_04 - 35_05)
 
 

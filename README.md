@@ -1,22 +1,27 @@
 # GIS SRTM Heightmap Tiles Pt
 
 
-__- Motivation?__
+## Motivation
 
 There's great open data for GIS stuff, but I find it hard to master and relate to.
 I wanted simple, developer-friendly resources to explore de altitude data I've known
 I had available via the SRTM initiative. These tiles are my contribution for that cause.
 
 
-__- What is this about?__
+## What is this about?
 
-This is a set of 256x256 RGBA slippy tiles encoding the altitude of Portugal, Azores and Madeira islands.
+This is a set of 256x256 RGBA slippy tiles encoding the altitude of Portugal's mainland, Azores and Madeira islands.
 
-You can get a glimpse of the data by visiting [this leaflet map](demos/explore_map.html) with the tile in use.
-You can [pick pixels in an example tile](demos/read_altitude.html) to get how the data is encoded.
+You can get a glimpse of the data by visiting
+[this leaflet map](https://josepedrodias.github.io/gis-srtm-heightmap-tiles-pt/demos/explore_map.html)
+with the tile in use.
+
+You can
+[pick pixels in an example tile](https://josepedrodias.github.io/gis-srtm-heightmap-tiles-pt/demos/read_altitude.html)
+to get how the data is encoded.
 
 
-__- Where does the information come from?__
+## Where does the information come from?
 
 I started up with [SRTM](https://lta.cr.usgs.gov/SRTM) information.
 For convenience I grabbed 5 tiles via [SRTM Tile Grabber](http://dwtkns.com/srtm/).
@@ -29,7 +34,7 @@ These are [GeoTIFF files](https://en.wikipedia.org/wiki/GeoTIFF) and I grabbed:
 * srtm_35_05.tif
 
 
-__- How did I generate it?__
+## How did I generate it?
 
 Disclaimer: I'm by no means a GIS expert. I have some experience in manipulating and exploring
 OSM and GMaps information and I dig 2D raster formats so bear with me if my methodology
@@ -53,7 +58,7 @@ The executive summary for what I did was:
 * automated the generation of all elected tiles and did a bit of manual tweaking (namely in the transition between 35_04 - 35_05)
 
 
-__- How is the information encoded?__
+## How is the information encoded?
 
 I'm not exposing the lack of data in any way (original data had it marked).
 
@@ -70,13 +75,13 @@ The following formulas map altitude from RGBA and back again:
     G = h % 256
 
 
-__- Community-related__
+## Community-related
 
 Feel free to report back any errors and/or borrow/improve the process for other parts of the globe.
 Just keep in mind I'm not maintaining this set professionally.
 
 
-__- Following work...__
+## Further work
 
 There's some more manipulations I would like to have but have no urgency or simple way to make available just yet.
 These are:

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>read altitude</title>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .canvases {
+        font-size: 0;
+      }
+
+      .canvases .row {
+        display: inline-block;
+        width: 256px;
+        font-family: arial narrow;
+        font-size: 10px;
+        text-align: center;
+        background-color: #DDD;
+      }
+
+      .instructions {
+        margin: 10px 0;
+        padding: 6px;
+        background-color: #FFD;
+      }
+
+      .log-container p {
+        margin: 0;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+
+  <body>
+    <label for="imgSrc">tile image</label>
+    <select id="imgSrc">
+      <option value="../tiles/10/487/625.png">lagos</option>
+      <option value="../tiles/10/463/610.png">madeira</option>
+      <option value="../tiles/10/485/631.png">lisboa</option>
+    </select>
+
+    <div class="canvases">
+      <div class="row">original tile data</div>
+      <div class="row">rendered in grayscale, scaled to max tile height being 255</div><br/>
+    </div>
+
+    <div class="instructions">
+      Click on a pixel to read its data.
+    </div>
+
+    <label>Log:</label>
+    <div class="log-container"></div>
+
+    <script type="text/javascript">
+      const canvasesEl = document.querySelector('.canvases');
+      const logContainerEl = document.querySelector('.log-container');
+      const selEl = document.querySelector('select');
+
+      function log(txt) {
+        const pEl = document.createElement('p');
+        pEl.appendChild( document.createTextNode(txt) );
+        logContainerEl.appendChild(pEl);
+      }
+
+      const cvsEl = document.createElement('canvas'); canvasesEl.appendChild(cvsEl);
+      const imgEl = document.createElement('img');    canvasesEl.appendChild(cvsEl);
+
+      // wiring hash <-> select <-> img
+      selEl.addEventListener('change', () => {
+        location.hash = selEl.value; location.reload();
+      });
+      if (location.hash) {
+        selEl.value = location.hash.substring(1);
+      }
+      imgEl.src = selEl.value;
+
+      imgEl.addEventListener('load', () => {
+        const W = imgEl.width;
+        const H = imgEl.height;
+        cvsEl.width = W;
+        cvsEl.height = H;
+        const ctx = cvsEl.getContext('2d');
+        ctx.drawImage(imgEl, 0, 0);
+        const id = ctx.getImageData(0, 0, W, H);
+        imgEl.style.display = 'none';
+
+        function unmap2(r, g, b) { return r*256 + g; }
+
+        // estimate max
+        let x, y, maxV = 0, maxPos;
+        for (y = 0; y < H; ++y) {
+          for (x = 0; x < W; ++x) {
+            const i = 4 * ( W * y + x );
+            const v = unmap2(id.data[i], id.data[i+1], id.data[i+2]);
+            if (v > maxV) {
+              maxV = v;
+              maxPos = [x, y];
+            }
+          }
+        }
+        log(`maxV is ${maxV} at ${maxPos[0]}, ${maxPos[1]}`);
+
+        // draw copy
+        const cvsEl2 = document.createElement('canvas');
+        cvsEl2.width = W;
+        cvsEl2.height = H;
+        canvasesEl.appendChild(cvsEl2);
+        const ctx2 = cvsEl2.getContext('2d');
+        for (y = 0; y < H; ++y) {
+          for (x = 0; x < W; ++x) {
+            const i = 4 * ( W * y + x );
+            const v = unmap2(id.data[i], id.data[i+1], id.data[i+2]);
+            const V = Math.round( v / maxV * 255 );
+            ctx2.fillStyle = `rgb(${V}, ${V}, ${V})`;
+            ctx2.fillRect(x, y, 1, 1);
+          }
+        }
+
+        function lookupAltitude(pos) {
+          const i = 4 * ( W * pos[1] + pos[0] );
+          const v = unmap2(id.data[i], id.data[i+1], id.data[i+2]);
+          log(`${pos.join(',')} -> ${v}`);
+        }
+
+        function lookupAltitudeFromClick(ev) { lookupAltitude([ev.layerX, ev.layerY]); }
+
+        cvsEl.addEventListener( 'click', lookupAltitudeFromClick);
+        cvsEl2.addEventListener('click', lookupAltitudeFromClick);
+      });
+    </script>
+  </body>
+</html>

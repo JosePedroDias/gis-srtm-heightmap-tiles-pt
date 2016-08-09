@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <title>explore map</title>
+
+    <style media="screen">
+      #map { height: 500px; }
+    </style>
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+    <script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+  </head>
+
+  <body>
+    <div id="map"></div>
+
+    <button onclick="m.setView([38.7077, -9.1276], 10)">lisboa</button>
+    <button onclick="m.setView([37.0726, -8.6280], 10)">lagos</button>
+    <button onclick="m.setView([37.7322, -25.7162], 10)">ponta delgada</button>
+    <button onclick="m.setView([32.7162, -16.9588], 10)">funchal</button>
+
+    <script>
+      //var height = L.tileLayer('height/{x}/{y}.png', {
+      //var height = L.tileLayer('http://127.0.0.1:9999/{x}/{y}.png', {
+      var height = L.tileLayer('../tiles/{z}/{x}/{y}.png', {
+        id            : 'height',
+        attribution   : '',
+        tms           : true,
+        maxNativeZoom : 10,
+        minZoom       : 10,
+        maxZoom       : 12
+      });
+
+      // https://leaflet-extras.github.io/leaflet-providers/preview/
+
+      var openstreetmap = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        id          : 'openstreetmap',
+        maxZoom     : 19,
+        attribution : '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      });
+
+      var opentopomap = L.tileLayer('http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        id          : 'opentopomap',
+        maxZoom     : 17,
+        attribution : 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+      });
+
+      var m = L.map('map', {
+        layers: [height]
+      });
+
+      //m.setView([38.7077, -9.1276], 10); // lisboa
+      m.setView([37.0726, -8.6280], 10); // lagos
+      //m.setView([37.7322, -25.7162], 10); // ponta delgada
+      //m.setView([32.7162, -16.9588], 10); // funchal
+
+      L.control.layers({
+        height        : height,
+        openstreetmap : openstreetmap,
+        opentopomap   : opentopomap
+      }).addTo(m);
+    </script>
+  </body>
+</html>

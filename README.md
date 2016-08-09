@@ -43,7 +43,8 @@ wasn't top notch.
 I ended up using mostly [GDAL](http://www.gdal.org/), installed via homebrew and did most scripting
 tasks in JS.
 
-Most scripts can be found in [GIS REPOS TODO](#). Removed empty PNGs by hand and merged the seams
+Most scripts can be found in [gis-toolbox](https://github.com/JosePedroDias/gis-toolbox).
+Removed empty PNGs by hand and merged the seams
 between 35_04 and 35_05 by using the highest pixels value in the transition.
 
 The executive summary for what I did was:
